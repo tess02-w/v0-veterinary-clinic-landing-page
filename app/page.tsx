@@ -4,7 +4,6 @@ import Hero from "@/components/hero"
 import About from "@/components/about"
 import Services from "@/components/services"
 import Team from "@/components/team"
-import Contact from "@/components/contact"
 import Location from "@/components/location-map"
 import Footer from "@/components/footer"
 
@@ -16,7 +15,6 @@ export default function Home() {
       <About />
       <Services />
       <Team />
-      <Contact />
       <Location />
       <Footer />
     </main>

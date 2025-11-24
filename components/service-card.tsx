@@ -2,16 +2,17 @@
 
 import { motion } from "framer-motion"
 import { useState } from "react"
+import type React from "react"
 
 interface ServiceCardProps {
   title: string
-  icon: string
+  icon: React.ComponentType<any>
   description: string
   image: string
   index: number
 }
 
-export default function ServiceCard({ title, icon, description, image, index }: ServiceCardProps) {
+export default function ServiceCard({ title, icon: Icon, description, image, index }: ServiceCardProps) {
   const [isHovered, setIsHovered] = useState(false)
 
   const cardVariants = {
@@ -128,34 +129,12 @@ export default function ServiceCard({ title, icon, description, image, index }: 
       <div className="p-6 flex-1 flex flex-col">
         <motion.h3 className="text-xl font-bold text-[#1B4D5C] mb-2 flex items-center gap-3">
           <motion.span className="text-3xl inline-block" variants={iconVariants} animate={isHovered ? "hover" : "idle"}>
-            {icon}
+            <Icon size={32} className="text-[#1B4D5C]" />
           </motion.span>
           <span className="flex-1">{title}</span>
         </motion.h3>
 
         <p className="text-gray-600 text-sm mb-6 line-clamp-2 flex-1">{description}</p>
-
-        <div className="flex gap-3">
-          <motion.button
-            className="flex-1 bg-[#1B4D5C] text-white px-4 py-2.5 rounded-full font-semibold text-sm transition-colors"
-            variants={buttonVariants}
-            initial="idle"
-            animate={isHovered ? "hover" : "idle"}
-            whileTap="tap"
-          >
-            Agendar
-          </motion.button>
-
-          <motion.button
-            className="flex-1 border-2 border-[#1B4D5C] text-[#1B4D5C] px-4 py-2.5 rounded-full font-semibold text-sm transition-colors"
-            variants={secondaryButtonVariants}
-            initial="idle"
-            animate={isHovered ? "hover" : "idle"}
-            whileTap="tap"
-          >
-            Saiba mais
-          </motion.button>
-        </div>
       </div>
     </motion.div>
   )

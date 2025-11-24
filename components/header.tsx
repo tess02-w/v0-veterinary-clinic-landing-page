@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { Menu, X } from "lucide-react"
+import { Menu, X, PawPrint } from "lucide-react"
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
@@ -23,8 +23,9 @@ export default function Header() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <Link href="#" className="text-2xl font-bold text-[#1B4D5C] font-serif">
-              🐾 Blue Paw
+            <Link href="#" className="text-2xl font-bold text-[#1B4D5C] font-serif flex items-center gap-2">
+              <PawPrint size={28} />
+              Blue Paw
             </Link>
           </div>
 

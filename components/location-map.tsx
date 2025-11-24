@@ -2,28 +2,29 @@
 
 import { motion } from "framer-motion"
 import { StaggerContainer, StaggerItem } from "./scroll-reveal"
+import { MapPin, Phone, Clock } from "lucide-react"
 
 export default function Location() {
   const locationDetails = [
     {
-      icon: "📍",
+      icon: MapPin,
       title: "Endereço",
       content: "Rua dos Animais, 123\nSão Paulo, SP 01234-567",
     },
     {
-      icon: "📞",
+      icon: Phone,
       title: "Telefone",
       content: "(11) 99999-9999\n(11) 3333-3333",
     },
     {
-      icon: "🕐",
+      icon: Clock,
       title: "Horário de Funcionamento",
       content: "Seg-Sex: 8h às 20h\nSáb-Dom: 8h às 18h",
     },
   ]
 
   return (
-    <section id="location" className="py-20 md:py-32 bg-white">
+    <section id="location" className="py-20 md:py-32 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -102,7 +103,7 @@ export default function Location() {
                           whileHover={{ scale: 1.2, rotate: 10 }}
                           transition={{ duration: 0.3 }}
                         >
-                          {detail.icon}
+                          <detail.icon size={32} className="text-[#E8A835]" />
                         </motion.div>
                         <div>
                           <h3 className="text-lg font-bold text-[#1B4D5C] mb-2">{detail.title}</h3>

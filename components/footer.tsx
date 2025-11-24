@@ -1,6 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
+import { PawPrint, Facebook, Instagram } from "lucide-react"
 
 export default function Footer() {
   const footerLinkVariants = {
@@ -18,7 +19,10 @@ export default function Footer() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h3 className="text-2xl font-bold font-serif mb-2">🐾 Blue Paw</h3>
+            <h3 className="text-2xl font-bold font-serif mb-2 flex items-center gap-2">
+              <PawPrint size={28} />
+              Blue Paw
+            </h3>
             <p className="text-white/80 text-sm">Cuidando do seu melhor amigo com amor e profissionalismo.</p>
           </motion.div>
 
@@ -76,18 +80,26 @@ export default function Footer() {
           >
             <h4 className="font-bold mb-4">Redes Sociais</h4>
             <div className="flex gap-4">
-              {["f", "i", "t"].map((icon, i) => (
-                <motion.a
-                  key={i}
-                  href="#"
-                  className="text-white/80 text-xl"
-                  whileHover={{ scale: 1.3, color: "#E8A835" }}
-                  whileTap={{ scale: 0.9 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  {icon}
-                </motion.a>
-              ))}
+              <motion.a
+                href="#"
+                className="text-white/80"
+                whileHover={{ scale: 1.3, color: "#E8A835" }}
+                whileTap={{ scale: 0.9 }}
+                transition={{ duration: 0.2 }}
+                title="Facebook"
+              >
+                <Facebook size={24} />
+              </motion.a>
+              <motion.a
+                href="#"
+                className="text-white/80"
+                whileHover={{ scale: 1.3, color: "#E8A835" }}
+                whileTap={{ scale: 0.9 }}
+                transition={{ duration: 0.2 }}
+                title="Instagram"
+              >
+                <Instagram size={24} />
+              </motion.a>
             </div>
           </motion.div>
         </div>

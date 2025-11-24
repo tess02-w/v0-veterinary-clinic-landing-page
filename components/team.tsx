@@ -1,10 +1,21 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
+import { motion, AnimatePresence } from "framer-motion"
 
 export default function Team() {
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [isMobile, setIsMobile] = useState(false)
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    checkMobile()
+    window.addEventListener("resize", checkMobile)
+    return () => window.removeEventListener("resize", checkMobile)
+  }, [])
 
   const team = [
     {
@@ -37,7 +48,7 @@ export default function Team() {
     },
   ]
 
-  const itemsPerSlide = 2
+  const itemsPerSlide = isMobile ? 1 : 2
   const totalSlides = Math.ceil(team.length / itemsPerSlide)
 
   const getCurrentSlideItems = () => {
@@ -45,14 +56,8 @@ export default function Team() {
     return team.slice(start, start + itemsPerSlide)
   }
 
-  const getNextSlideItems = () => {
-    const nextIndex = (currentIndex + 1) % totalSlides
-    const start = nextIndex * itemsPerSlide
-    return team.slice(start, start + itemsPerSlide)
-  }
-
   const nextSlide = () => {
-    setCurrentIndex((prev) => prev + 1)
+    setCurrentIndex((prev) => (prev + 1) % totalSlides)
   }
 
   const prevSlide = () => {
@@ -78,71 +83,80 @@ export default function Team() {
         </div>
 
         {/* Carousel */}
-        <div className="relative">
+        <div className="relative overflow-x-hidden">
           <div className="overflow-hidden">
-            <div className="grid grid-cols-2 gap-4 md:gap-6 px-2">
-              {getCurrentSlideItems().map((member, index) => (
-                <div
-                  key={index}
-                  className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-md transition-shadow"
-                >
-                  {/* Image */}
-                  <div className="aspect-square overflow-hidden bg-gray-200">
-                    <img
-                      src={member.image || "/placeholder.svg"}
-                      alt={member.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-
-                  {/* Content */}
-                  <div className="p-4 md:p-6">
-                    <h3 className="text-lg md:text-2xl font-bold text-[#1B4D5C] mb-1">{member.name}</h3>
-                    <p className="text-[#E8A835] font-semibold text-sm md:text-base mb-3 md:mb-4">{member.specialty}</p>
-                    <p className="text-gray-600 text-sm md:text-base mb-4 md:mb-6 line-clamp-2 md:line-clamp-3">
-                      {member.description}
-                    </p>
-
-                    {/* Actions */}
-                    <div className="flex gap-2 md:gap-3">
-                      <button className="flex-1 border-2 border-[#1B4D5C] text-[#1B4D5C] px-3 md:px-4 py-2 rounded-full font-semibold hover:bg-[#f5f7fa] transition-colors text-xs md:text-sm">
-                        Conhecer
-                      </button>
-                      <button className="flex-1 text-[#1B4D5C] px-3 md:px-4 py-2 font-semibold hover:underline text-xs md:text-sm">
-                        Ver mais
-                      </button>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentIndex}
+                initial={{ opacity: 0, x: 100 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -100 }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+                className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 px-2"
+              >
+                {getCurrentSlideItems().map((member, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: index * 0.1 }}
+                    className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-lg transition-shadow"
+                  >
+                    {/* Image */}
+                    <div className="aspect-square overflow-hidden bg-gray-200">
+                      <motion.img
+                        src={member.image || "/placeholder.svg"}
+                        alt={member.name}
+                        className="w-full h-full object-cover"
+                        whileHover={{ scale: 1.05 }}
+                        transition={{ duration: 0.3 }}
+                      />
                     </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+
+                    {/* Content */}
+                    <div className="p-4 md:p-4">
+                      <h3 className="text-lg md:text-xl font-bold text-[#1B4D5C] mb-1">{member.name}</h3>
+                      <p className="text-[#E8A835] font-semibold text-sm md:text-base mb-2">{member.specialty}</p>
+                      <p className="text-gray-600 text-sm md:text-base line-clamp-3 md:line-clamp-2">
+                        {member.description}
+                      </p>
+                    </div>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </AnimatePresence>
           </div>
 
           {/* Navigation Arrows */}
-          <button
+          <motion.button
             onClick={prevSlide}
-            className="absolute left-0 top-1/3 -translate-x-6 md:translate-x-0 md:left-4 bg-[#1B4D5C] text-white p-2 rounded-full hover:bg-[#153844] transition-colors z-10"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            className="absolute left-2 md:left-4 top-1/3 -translate-y-1/2 bg-[#1B4D5C] text-white p-2 rounded-full hover:bg-[#153844] transition-colors z-10"
             aria-label="Anterior"
           >
             <ChevronLeft size={24} />
-          </button>
-          <button
+          </motion.button>
+          <motion.button
             onClick={nextSlide}
-            className="absolute right-0 top-1/3 translate-x-6 md:translate-x-0 md:right-4 bg-[#1B4D5C] text-white p-2 rounded-full hover:bg-[#153844] transition-colors z-10"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            className="absolute right-2 md:right-4 top-1/3 -translate-y-1/2 bg-[#1B4D5C] text-white p-2 rounded-full hover:bg-[#153844] transition-colors z-10"
             aria-label="Próximo"
           >
             <ChevronRight size={24} />
-          </button>
+          </motion.button>
 
           {/* Indicators */}
           <div className="flex justify-center gap-2 mt-8">
             {Array.from({ length: totalSlides }).map((_, index) => (
-              <button
+              <motion.button
                 key={index}
                 onClick={() => setCurrentIndex(index)}
                 className={`h-2 rounded-full transition-all ${
-                  (currentIndex % totalSlides) === index ? "bg-[#E8A835] w-8" : "bg-gray-300 w-2"
+                  currentIndex % totalSlides === index ? "bg-[#E8A835] w-8" : "bg-gray-300 w-2"
                 }`}
+                whileHover={{ scale: 1.2 }}
                 aria-label={`Ir para slide ${index + 1}`}
               />
             ))}
